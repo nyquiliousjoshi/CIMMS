@@ -2,23 +2,69 @@
 
 ## Course Syllabus and Manifest
 
-Suggested advanced preparation: 
-•	R4DS by Hadley Wickham (the father of modern data mining) 
-o	Will assign sections in github weekly from this resource as well as other books/articles
-•	Downloading/Setting up R: https://rstudio-education.github.io/hopr/starting.html
-o	Work through this to understand the “flavor” of code. I would love if everyone could come in with an understanding of variables, methods, values, and object types to make discussions a little smoother.
-In this series of lunch lectures and problem sets students will learn to identify, clean and analyze robust clinical datasets utilizing R. This series and the skillsets developed will aim to provide students with the knack to think computationally and run multi-level analyses to answer biological questions. Understanding these topics will enable students to apply their basic science education to answer complex, clinical questions. 
-Course Objectives:
-•	Identify computational resources available for clinical, basic, and translational research
-•	Conduct data cleaning procedures as per R4DS
-•	Export publicly available data resources
-•	Conduct robust analyses for a variety of use cases
-Teaching Style: Lecture (10 min MAX) + Group Problem Sets (45 minutes)
-We will attempt to make this course more of a flipped-classroom model. Lectures will predominantly aim to describe statistics and principles behind the code (ChatGPT can’t do that). Group problem sets will be an exciting opportunity to apply our learning. I will identify datasets and provide a set of challenging questions that can only be answered by coding and cannot be answered with GPT. In groups students will grapple with these questions and work together to come up with a script that answers each question. This process of wrangling with questions will impart some important computational wisdom. By the end of the day, I will release an answer key to our class github for those interested. 
-<img width="468" height="518" alt="image" src="https://github.com/user-attachments/assets/9e0501f7-c476-48e0-8637-63c46699bde2" />
+# Clinical Data Analysis with R
+
+## Overview
+
+This repository supports a lunch-time lecture and problem-set series designed to introduce students to identifying, cleaning, and analyzing real-world clinical datasets using **R**. The course emphasizes computational thinking and multi-level analytical approaches to answer biologically and clinically relevant questions.
+
+By the end of the series, students will be able to apply their basic science education to complex clinical and translational research problems.
+
+---
+
+## Suggested Advanced Preparation
+
+- **R for Data Science (R4DS)** — Hadley Wickham  
+  - Weekly sections will be assigned via GitHub, along with additional articles and resources.
+
+- **R & RStudio Setup**  
+  - Follow: https://rstudio-education.github.io/hopr/starting.html  
+  - Students are encouraged to arrive with a basic understanding of:
+    - Variables  
+    - Functions / methods  
+    - Values  
+    - Object types  
+
+---
+
+## Course Objectives
+
+- Identify computational resources for:
+  - Clinical research  
+  - Basic science research  
+  - Translational research
+- Perform data cleaning using best practices outlined in *R4DS*
+- Export and work with publicly available datasets
+- Conduct robust analyses across a variety of clinical and biological use cases
+
+---
+
+## Teaching Format
+
+**Lecture (≤10 minutes) + Group Problem Sets (45 minutes)**
+
+This course follows a **flipped-classroom** model:
+
+- Lectures focus on the statistical concepts and analytical principles underlying the code
+- Group problem sets emphasize hands-on application using real datasets
+
+Students will work collaboratively to answer challenging questions that require original coding and cannot be solved using generative AI tools alone. The goal is to build genuine computational intuition through active problem solving.
+
+---
+
+## Datasets & Solutions
+
+- Curated datasets and weekly problem sets will be provided
+- A complete answer key will be released to the class GitHub repository after each session for independent review
+
+---
+
+## Expectations
+
+- Active participation in group work  
+- Willingness to struggle productively with unfamiliar problems  
+- Collaboration and curiosity are strongly encouraged  
 
 
-
-| Attempt | #1  | #2  |
 | ------- | --- | --- |
 | Seconds | 301 | 283 |
