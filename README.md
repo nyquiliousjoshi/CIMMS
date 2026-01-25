@@ -65,6 +65,16 @@ Students will work collaboratively to answer challenging questions that require 
 - Willingness to struggle productively with unfamiliar problems  
 - Collaboration and curiosity are strongly encouraged  
 
+---
+## Course Schedule
 
-| ------- | --- | --- |
-| Seconds | 301 | 283 |
+| Date | Room | Topic | Preparation | Lecture | Problem Set |
+|------|------|-------|-------------|---------|-------------|
+| | | Introduction to R & RStudio Setup | | | |
+| | | Computational Thinking in Clinical Research | | | |
+| | | Data Structures, Objects, and Functions in R | | | |
+| | | Data Cleaning Principles (R4DS) | | | |
+| | | Working with Public Clinical Datasets | | | |
+| | | Data Wrangling and Transformation | | | |
+| | | Exploratory Data Analysis | | | |
+| | | Multi-level and Applied Clinical Analyses | | | |
