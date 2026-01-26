@@ -70,11 +70,27 @@ Students will work collaboratively to answer challenging questions that require 
 
 | Date | Room | Topic | Preparation | Lecture | Problem Set |
 |------|------|-------|-------------|---------|-------------|
-| | | Introduction to R & RStudio Setup | | | |
-| | | Computational Thinking in Clinical Research | | | |
-| | | Data Structures, Objects, and Functions in R | | | |
-| | | Data Cleaning Principles (R4DS) | | | |
-| | | Working with Public Clinical Datasets | | | |
-| | | Data Wrangling and Transformation | | | |
-| | | Exploratory Data Analysis | | | |
-| | | Multi-level and Applied Clinical Analyses | | | |
+| |      | Week 0: Coding basics and a brief introduction to the world of R |             |         |             |
+|      |      | Week 1: Hadley Wickham’s Tidyverse — an exploration of data mining principles |             |         |             |
+|      |      | Week 2: Data cleaning and plotting (Clinical Research Principles) |             |         |             |
+|      |      | Week 3: Basics of regression and statistics (ANOVA, Chi-square, t-tests, etc.) |             |         |             |
+|      |      | Week 4: Survival analyses and Cox regression principles (Basic Research Principles) |             |         |             |
+|      |      | Week 5: Pulling large datasets — cBioPortal & GDC |             |         |             |
+|      |      | Week 6: The great RNA-seq |             |         |             |
+|      |      | Week 7: The great RNA-seq (continued) |             |         |             |
+|      |      | Week 8: scRNA-seq for the medical student |             |         |             |
+|      |      | Week 9: scRNA-seq for the medical student |             |         |             |
+|      |      | Week 10: Brief supervised machine learning models (LASSO, Random Forests, Boosting, Decision Trees) and wrap-up |             |         |             |
+
+| Date | Room | Topic | Preparation | Lecture | Problem Set |
+|------|------|-------|-------------|---------|-------------|
+| Wed Jan 28 | Room 181 or 201 (TBD) | Week 0: Coding basics and a brief introduction to the world of R | [Preparation Materials] (https://docs.google.com/document/d/1zMrTXclMZO7kiOUoAFptqnFXzi1dbjjfebmfhpcDR7M/edit?usp=sharing) | | |
+| Wed Feb 11 | Room 199A | Week 1: Hadley Wickham’s Tidyverse — an exploration of data mining principles | | | |
+| Wed Feb 25 | Room 199A | Week 2: Data cleaning and plotting (Clinical Research Principles) | | | |
+| Wed Mar 11 | Room 199A | Week 3: Basics of regression and statistics (ANOVA, Chi-square, t-tests, etc.) | | | |
+| Wed Apr 1 | Room 199A | Week 4: Survival analyses and Cox regression principles (Basic Research Principles) | | | |
+| Wed Apr 15 | Room 199A | Week 5: Pulling large datasets — cBioPortal & GDC | | | |
+| Thu Apr 16 | Room 103A | Week 6: The great RNA-seq | | | |
+| Wed Apr 22 | Room 199A | Week 7: The great RNA-seq (continued) | | | |
+| Wed Apr 29 | Room 199A | Week 8: scRNA-seq for the medical student | | | |
+| Wed May 6 | Room 199A | Week 9: scRNA-seq for the medical student + wrap up | | | |
