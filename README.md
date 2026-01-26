@@ -2,8 +2,6 @@
 
 ## Course Syllabus and Manifest
 
-# Clinical Data Analysis with R
-
 ## Overview
 
 This repository supports a lunch-time lecture and problem-set series designed to introduce students to identifying, cleaning, and analyzing real-world clinical datasets using **R**. The course emphasizes computational thinking and multi-level analytical approaches to answer biologically and clinically relevant questions.
