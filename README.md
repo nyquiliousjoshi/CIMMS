@@ -73,8 +73,8 @@ Students will work collaboratively to answer challenging questions that require 
 | Wed Feb 25 | Room 199A | Week 2: Data cleaning and plotting (Clinical Research Principles) | | | |
 | Wed Mar 11 | Room 199A | Week 3: Basics of regression and statistics (ANOVA, Chi-square, t-tests, etc.) | | | |
 | Wed Apr 1 | Room 199A | Week 4: Survival analyses and Cox regression principles (Basic Research Principles) | | | |
-| Wed Apr 15 | Room 199A | Week 5: Pulling large datasets — cBioPortal & GDC | | | |
-| Thu Apr 16 | Room 103A | Week 6: The great RNA-seq | | | |
+| Wed Apr 08 | Room 199A | Week 5: Pulling large datasets — cBioPortal & GDC | | | |
+| Wed Apr 15 | Room 103A | Week 6: The great RNA-seq | | | |
 | Wed Apr 22 | Room 199A | Week 7: The great RNA-seq (continued) | | | |
 | Wed Apr 29 | Room 199A | Week 8: scRNA-seq for the medical student | | | |
 | Wed May 6 | Room 199A | Week 9: scRNA-seq for the medical student + wrap up | | | |
