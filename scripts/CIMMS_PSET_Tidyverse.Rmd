@@ -190,17 +190,6 @@ Then:
 # your code here
 ```
 
-## C5. Data quality checks (hard)
-Write code to answer each:
-
-1. Are there any patients with **multiple different genders** recorded across rows?
-2. Are there any patients with **multiple different emails** recorded across rows?
-3. Which patients have the **highest number of visits**? Return the top 5.
-
-```{r}
-# your code here
-```
-
 ## Viz Challenge
 Create a script that takes your clean-ish data and ouputs the a scatterplot comparing age and BP ranges. Try to make this viz pretty!
 
