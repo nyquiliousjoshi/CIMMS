@@ -1,0 +1,134 @@
+---
+title: "CIMMS_Slides_Tidyverse"
+author: "Nikhil Joshi"
+date: "2026-02-11"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(tidyverse)
+```
+
+# Introduction
+
+We can explore data not only by plotting it, but also by transforming it. In **dplyr**, the core “verbs” include:
+
+- `filter()` (subset rows)
+- `select()` (subset columns)
+- `arrange()` (reorder rows)
+- `mutate()` (create new columns based on old columns)
+- `summarise()` (collapse many rows into summary values)
+- `group_by()` (apply verbs “by group”)
+
+We'll use the built-in `diamonds` dataset.
+
+```{r}
+diamonds
+```
+
+# Isolating data
+
+## `filter()`
+
+```{r}
+filter(diamonds, price >= 10000)
+```
+
+```{r}
+filter(diamonds, price >= 10000 & clarity %in% c("VVS1", "IF"))
+```
+
+## `select()`
+
+```{r}
+select(diamonds, carat, cut, color, clarity)
+```
+
+## `arrange()`
+
+```{r}
+arrange(diamonds, carat)
+arrange(diamonds, desc(carat))
+```
+
+# Deriving information
+
+## `mutate()`
+
+```{r}
+mutate(diamonds, price_per_carat = price / carat)
+```
+
+```{r}
+diamonds %>%
+  mutate(
+    value = case_when(
+      carat > 2 & price < 5000 ~ "good",
+      carat > 1 & price < 2500 ~ "ok",
+      TRUE ~ "bad"
+    )
+  )
+```
+
+## `summarise()`
+
+```{r}
+summarise(diamonds, num_fancy_diamonds = sum(price / carat > 10000))
+```
+
+```{r}
+summarise(
+  diamonds,
+  num_fancy_diamonds = sum(price / carat > 10000),
+  mean_diamond_price = mean(price)
+)
+```
+
+# Multi-step transformations
+
+## Pipes
+
+```{r}
+diamonds %>%
+  filter(cut == "Premium") %>%
+  mutate(price_per_carat = price / carat) %>%
+  arrange(desc(price_per_carat))
+```
+
+```{r}
+diamonds %>%
+  filter(cut == "Premium") %>%
+  mutate(price_per_carat = price / carat) %>%
+  ggplot(aes(x = price_per_carat)) +
+  geom_histogram()
+```
+
+## `group_by()` and `count()`
+
+```{r}
+diamonds %>%
+  group_by(cut) %>%
+  summarise(max_price = max(price))
+```
+
+```{r}
+diamonds %>%
+  group_by(cut, clarity) %>%
+  summarise(max_price = max(price)) %>%
+  ungroup()
+```
+
+```{r}
+count(diamonds, cut)
+```
+
+## Storing transformed data
+
+```{r}
+max_prices <- diamonds %>%
+  group_by(cut) %>%
+  summarise(max_price = max(price))
+
+max_prices
+```

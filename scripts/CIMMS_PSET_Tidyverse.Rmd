@@ -1,0 +1,193 @@
+---
+title: "CIMMS_PSET2_DataTransformation"
+author: "Nikhil Joshi"
+date: "2026-02-11"
+output: powerpoint_presentation
+---
+
+# Instructions
+
+- This problem set uses the file **`healthcare_messy_data.csv`** (place it in the same folder as this Rmd).
+- Use **tidyverse** tools (`dplyr`, `tidyr`, `stringr`, `readr`, `ggplot2`) and **lubridate** for dates where needed.
+- Try to write code that is robust
+- Play around with the data provided
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+install.packages(c("tidyverse", "lubridate"))
+library(tidyverse)
+library(lubridate)
+```
+
+```{r}
+# 1) Read the dataset
+df_raw <- readr::read_csv("healthcare_messy_data.csv", show_col_types = FALSE)
+```
+
+# Part A — First look (easy)
+
+## A1. Basic structure
+1. Print the first 10 rows.
+2. Use `glimpse()` to inspect column types.
+3. How many rows and columns are in the dataset?
+
+```{r}
+# your code here
+```
+
+## A2. Missingness overview
+1. For each column, compute the number of missing values.
+2. Which 3 columns have the most missing values?
+
+*Hint:* `summarise(across(...))` + `sort()` / `pivot_longer()`.
+
+```{r}
+# your code here
+```
+
+## A3. Quick counts
+1. Count the number of records by `Gender`.
+2. Count the number of records by `Condition` (including missing).
+3. Create a two-way count table of `Condition` by `Medication`.
+
+```{r}
+# your code here
+```
+
+# Part B — Cleaning
+
+In this section you will create a cleaned dataset named `df`.
+
+## B1. Standardize column names
+Rename columns to `snake_case` (e.g., `patient_name`, `visit_date`, `blood_pressure`, `phone_number`).
+
+*Hint:* You may use `janitor::clean_names()` if you want, but it is not required.
+
+```{r}
+# your code here
+```
+
+## B2. Clean `age`
+The `age` column contains numeric ages as strings and at least one non-numeric value (e.g., `"forty"`).
+
+1. Create a numeric `age` column.
+2. Recode `"forty"` to `40`.
+3. Report how many ages are missing *after* your conversion.
+
+```{r}
+# your code here
+```
+
+## B3. Clean `visit_date`
+The `visit_date` column contains multiple formats (e.g., `"01/15/2020"`, `"2020/02/20"`, `"2019.12.01"`, `"03-25-2019"`, `"April 5, 2018"`).
+
+1. Parse `visit_date` into a proper `Date` column named `visit_date`.
+2. Create `visit_year` and `visit_month` (as integers).
+3. Verify there are **no** parsing failures (i.e., no new NAs created from non-missing strings).
+
+*Hint:* `parse_date_time()` with multiple orders is often easiest.
+
+```{r}
+# your code here
+```
+
+## B4. Split `blood_pressure`
+Split `blood_pressure` (e.g., `"120/80"`) into:
+- `sbp` (systolic) and
+- `dbp` (diastolic)
+
+Both should be numeric.
+
+1. How many records have missing blood pressure?
+2. Compute the mean and median of `sbp` and `dbp`.
+
+```{r}
+# your code here
+```
+
+## B5. Clean `medication`
+The `medication` column contains `"NONE"` to indicate no medication.
+
+1. Recode `"NONE"` to `NA`.
+2. After recoding, what proportion of rows have missing medication?
+
+```{r}
+# your code here
+```
+
+## B6. Clean `phone_number`
+Phone numbers include real values, empty strings, and missing values.
+
+1. Convert empty strings (`""`) to `NA`.
+2. Create a `has_phone` logical indicator.
+3. Compute `has_phone` rate by `gender`.
+
+```{r}
+# your code here
+```
+
+# Part C — Analysis (medium → hard)
+
+Use the cleaned dataset `df` for the remaining questions.
+
+## C1. “Latest visit” per patient
+1. For each `patient_name`, find the most recent `visit_date`.
+2. Join (or otherwise attach) the most recent visit information back onto the patient records.
+3. Create a dataset of **one row per patient** with their latest visit date and associated `condition`, `medication`, `sbp`, `dbp`, and `cholesterol`.
+
+```{r}
+# your code here
+```
+
+## C2. Condition prevalence over time
+1. Using `visit_year`, compute the count of each `condition` per year (excluding missing conditions).
+2. Make a line plot of counts over time (one line per condition).
+
+```{r}
+# your code here
+```
+
+## C3. Blood pressure summary by condition (with missing handling)
+1. For each condition, compute:
+   - `n` (total rows),
+   - `n_bp` (rows with non-missing `sbp`),
+   - mean `sbp` and mean `dbp` (computed on non-missing values).
+2. Sort conditions by mean `sbp` descending.
+
+```{r}
+# your code here
+```
+
+## C4. “Hypertensive-range” flag (harder)
+Create a binary flag `htn_range` defined as:
+- `TRUE` if `sbp >= 130` **or** `dbp >= 80`
+- `FALSE` if both `sbp` and `dbp` are present and the criteria are not met
+- `NA` if either `sbp` or `dbp` is missing
+
+Then:
+1. Compute the overall prevalence of `htn_range` (excluding NAs from the denominator).
+2. Compute prevalence by `condition`.
+3. Make a bar plot of prevalence by condition (ordered high to low).
+
+```{r}
+# your code here
+```
+
+## C5. Data quality checks (hard)
+Write code to answer each:
+
+1. Are there any patients with **multiple different genders** recorded across rows?
+2. Are there any patients with **multiple different emails** recorded across rows?
+3. Which patients have the **highest number of visits**? Return the top 5.
+
+```{r}
+# your code here
+```
+
+## CHALLENGE
+Create a script that takes your clean-ish data and ouputs the a scatterplot comparing age and BP ranges. Try to make this viz pretty!
+
+```{r}
+
+```
+
