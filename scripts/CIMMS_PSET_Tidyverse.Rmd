@@ -86,8 +86,16 @@ The `age` column contains numeric ages as strings and at least one non-numeric v
 # your code here
 ```
 
+## B2b. Age Groups
+
+Create groups for individuals under 30, individuals between 30 - 49 and individuals greater than 50 years
+
+```{r}
+# your code here
+```
+
 ## B3. Clean `visit_date`
-The `visit_date` column contains multiple formats (e.g., `"01/15/2020"`, `"2020/02/20"`, `"2019.12.01"`, `"03-25-2019"`, `"April 5, 2018"`).
+The `visit_date` column contains multiple formats (e.g., `"01/15/2020"`, `"2020/02/20"`, `"2019.12.01"`, `"03-25-2019"`, `"April 5, 2018"`). 
 
 1. Parse `visit_date` into a proper `Date` column named `visit_date`.
 2. Create `visit_year` and `visit_month` (as integers).
