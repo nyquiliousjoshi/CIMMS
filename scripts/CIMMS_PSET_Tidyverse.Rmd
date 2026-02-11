@@ -24,7 +24,7 @@ library(lubridate)
 df_raw <- readr::read_csv("healthcare_messy_data.csv", show_col_types = FALSE)
 ```
 
-# Part A — First look (easy)
+# Part A — First look
 
 ## A1. Basic structure
 1. Print the first 10 rows.
@@ -35,25 +35,33 @@ df_raw <- readr::read_csv("healthcare_messy_data.csv", show_col_types = FALSE)
 # your code here
 ```
 
-## A2. Missingness overview
-1. For each column, compute the number of missing values.
-2. Which 3 columns have the most missing values?
 
-*Hint:* `summarise(across(...))` + `sort()` / `pivot_longer()`.
-
-```{r}
-# your code here
-```
-
-## A3. Quick counts
+## A2. Quick counts
 1. Count the number of records by `Gender`.
 2. Count the number of records by `Condition` (including missing).
-3. Create a two-way count table of `Condition` by `Medication`.
 
 ```{r}
 # your code here
 ```
 
+## A3. Cholesterol Average
+1. Remove samples with NA cholesterol
+2. Determine mean cholesterol
+3. Determine mean cholesterol by sex
+```{r}
+# your code here
+
+```
+
+## A4. Cholesterol Average by medication type
+1. Use summarise to identify *Grouped* cholesterol for patients on different medications
+2. *Oh no!* Patients could be on multiple medications. 
+This is a more challenging task but figure out how to pivot the data so you can accurately measure cholesterol for patients on *only one* medication.
+
+```{r}
+# your code here
+
+```
 # Part B — Cleaning
 
 In this section you will create a cleaned dataset named `df`.
@@ -71,7 +79,7 @@ Rename columns to `snake_case` (e.g., `patient_name`, `visit_date`, `blood_press
 The `age` column contains numeric ages as strings and at least one non-numeric value (e.g., `"forty"`).
 
 1. Create a numeric `age` column.
-2. Recode `"forty"` to `40`.
+2. Recode `"forty"` to `40`. How could we glean the different unique values in this column?
 3. Report how many ages are missing *after* your conversion.
 
 ```{r}
@@ -100,6 +108,7 @@ Both should be numeric.
 
 1. How many records have missing blood pressure?
 2. Compute the mean and median of `sbp` and `dbp`.
+3. Play around with ggplot (use help section!) to figure out how to make scatterplot of sbp vs. age
 
 ```{r}
 # your code here
@@ -184,10 +193,10 @@ Write code to answer each:
 # your code here
 ```
 
-## CHALLENGE
+## Viz Challenge
 Create a script that takes your clean-ish data and ouputs the a scatterplot comparing age and BP ranges. Try to make this viz pretty!
 
 ```{r}
-
+# your code here
 ```
 
