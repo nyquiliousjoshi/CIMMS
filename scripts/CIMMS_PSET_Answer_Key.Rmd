@@ -1,0 +1,175 @@
+
+---
+title: "CIMMS PSET 2 — Answer Key"
+author: "Answer Key"
+output: html_document
+---
+
+```{r setup, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(lubridate)
+library(janitor)
+```
+
+```{r load-data}
+df_raw <- readr::read_csv("healthcare_messy_data.csv", show_col_types = FALSE)
+```
+
+# Part A — First Look
+
+## A1. Basic Structure
+
+```{r}
+head(df_raw, 10)
+glimpse(df_raw)
+dim(df_raw)
+```
+
+## A2. Quick Counts
+
+```{r}
+df_raw %>%
+  count(Gender)
+
+df_raw %>%
+  count(Condition, .drop = FALSE)
+```
+
+## A3. Cholesterol Average
+
+```{r}
+df_raw %>%
+  filter(Cholesterol != "NaN") %>%
+  mutate(Cholesterol = as.numeric(Cholesterol)) %>%
+  summarise(mean_chol = mean(Cholesterol, na.rm = TRUE))
+
+df_raw %>%
+  filter(Cholesterol != "NaN") %>%
+  mutate(Cholesterol = as.numeric(Cholesterol)) %>%
+  group_by(Gender) %>%
+  summarise(mean_chol = mean(Cholesterol, na.rm = TRUE))
+```
+
+# Part B — Cleaning
+
+## B1. Standardize Column Names
+
+```{r}
+df_clean <- df_raw %>%
+  clean_names()
+```
+
+## B2. Convert Dates
+
+```{r}
+df_clean <- df_clean %>%
+  mutate(
+    visit_date = parse_date_time(visit_date, orders = c("mdy", "ymd", "dmy"))
+  )
+```
+
+## B3. Clean Gender
+
+```{r}
+df_clean <- df_clean %>%
+  mutate(
+    gender = str_to_lower(gender),
+    gender = case_when(
+      gender %in% c("m", "male") ~ "Male",
+      gender %in% c("f", "female") ~ "Female",
+      TRUE ~ NA_character_
+    )
+  )
+```
+
+## B4. Convert Blood Pressure
+
+```{r}
+df_clean <- df_clean %>%
+  separate(blood_pressure, into = c("systolic", "diastolic"), sep = "/", convert = TRUE)
+```
+
+# Part C — Transformation
+
+## C1. BMI
+
+```{r}
+df_clean <- df_clean %>%
+  mutate(bmi = weight_kg / (height_cm/100)^2)
+```
+
+## C2. Age Groups
+
+```{r}
+df_clean <- df_clean %>%
+  mutate(age_group = case_when(
+    age < 30 ~ "<30",
+    age >= 30 & age < 50 ~ "30-49",
+    age >= 50 ~ "50+"
+  ))
+```
+
+## C3. Mean Blood Pressure
+
+```{r}
+df_clean %>%
+  group_by(condition) %>%
+  summarise(
+    mean_sys = mean(systolic, na.rm = TRUE),
+    mean_dia = mean(diastolic, na.rm = TRUE)
+  )
+```
+
+# Part D — Summaries
+
+## D1. Visit Counts
+
+```{r}
+df_clean %>%
+  count(patient_id)
+```
+
+## D2. Long Format
+
+```{r}
+df_long <- df_clean %>%
+  pivot_longer(
+    cols = c(cholesterol, bmi, systolic, diastolic),
+    names_to = "measure",
+    values_to = "value"
+  )
+```
+
+## D3. Condition vs Gender
+
+```{r}
+df_clean %>%
+  tabyl(condition, gender) %>%
+  adorn_totals("both")
+```
+
+# Part E — Visualization
+
+## E1. Cholesterol Distribution
+
+```{r}
+ggplot(df_clean, aes(x = cholesterol)) +
+  geom_histogram(bins = 30)
+```
+
+## E2. BMI by Condition
+
+```{r}
+ggplot(df_clean, aes(x = condition, y = bmi)) +
+  geom_boxplot()
+```
+
+## E3. Visits Over Time
+
+```{r}
+df_clean %>%
+  mutate(month = floor_date(visit_date, "month")) %>%
+  count(month) %>%
+  ggplot(aes(x = month, y = n)) +
+  geom_line()
+```
