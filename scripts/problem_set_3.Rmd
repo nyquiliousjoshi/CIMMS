@@ -1,0 +1,283 @@
+---
+title: "Clinical Informatics for the Modern Medical Student"
+subtitle: "Problem Set: Data cleaning, plotting, analyses"
+author: "Nikhil Joshi"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(tidyverse)
+library(lubridate)
+library(janitor)
+library(gtsummary)
+library(gt)
+library(broom)
+```
+
+# Assignment overview
+
+In this problem set, you will work with a messy outpatient clinical dataset modeled after data exported from an electronic health record. Your job is to clean the data, create clinically meaningful variables, summarize the cohort, generate visualizations, and perform basic analyses relevant to ambulatory care and clinical informatics.
+
+## Learning objectives
+
+By the end of this assignment, you should be able to:
+
+- import and inspect a messy clinical dataset
+- clean and standardize variable names and values
+- identify implausible entries and convert them appropriately
+- generate useful visualizations in `ggplot2`
+- interpret analyses in a clinically grounded way
+
+# Dataset
+
+## Instructor dataset generator
+
+Use the following code to generate the dataset distributed to students.
+
+```{r dataset-generator, eval=FALSE}
+set.seed(123)
+
+n <- 180
+
+clinic_data <- tibble(
+  PatientID = sample(10001:10250, n, replace = FALSE),
+  Age = sample(c(18:89, 999, NA), n, replace = TRUE),
+  Sex = sample(c("Male", "Female", "M", "F", "female", "male", NA), n, replace = TRUE),
+  Race = sample(c("White", "Black", "Asian", "Hispanic", "Other", "Declined", NA), n, replace = TRUE),
+  VisitDate = sample(seq.Date(as.Date("2025-01-01"), as.Date("2025-12-31"), by = "day"), n, replace = TRUE),
+  Diagnosis = sample(c("HTN", "Hypertension", "DM2", "T2DM", "CHF", "COPD", "HTN;DM2", "DM2;CHF"), n, replace = TRUE),
+  SystolicBP = sample(c(85:220, 500, NA), n, replace = TRUE),
+  DiastolicBP = sample(c(40:130, -5, NA), n, replace = TRUE),
+  Height_cm = sample(c(145:195, 20, NA), n, replace = TRUE),
+  Weight_kg = sample(c(45:160, 400, NA), n, replace = TRUE),
+  A1c = sample(c(seq(4.8, 14.5, by = 0.1), 25, NA), n, replace = TRUE),
+  Creatinine = sample(c(seq(0.4, 4.5, by = 0.1), 12, NA), n, replace = TRUE),
+  Smoker = sample(c("Yes", "No", "Former", "Current", "Never", NA), n, replace = TRUE),
+  NoShow = sample(c("Y", "N", "Yes", "No", NA), n, replace = TRUE),
+  PortalMessageCount = sample(c(0:25, 100, NA), n, replace = TRUE)
+)
+
+write_csv(clinic_data, "clinical_informatics_problem_set_data.csv")
+```
+
+# Clinical scenario
+
+You are given a messy outpatient dataset extracted from the electronic health record. It contains demographic information, diagnoses, visit data, vital signs, selected laboratory values, and a measure of patient engagement through portal messages. Your goal is to transform the dataset into an analysis-ready form and answer clinically relevant questions.
+
+# Instructions
+
+Complete the code chunks below. Add short written interpretation where requested. Use clear code and comment major steps.
+
+# Part 1: Import and inspect the data
+
+## Question 1
+
+Load the dataset and inspect its structure.
+
+### Tasks
+
+1. Import the CSV file.
+2. Display the first 10 rows.
+3. Check the variable types.
+4. Count missing values in each column.
+
+```{r question-1}
+# Your code here
+```
+
+# Part 2: Standardize variable names and categories
+
+## Question 2
+
+Make the variable names analysis-ready.
+
+### Tasks
+
+1. Convert all column names to `snake_case`.
+2. Print the updated column names.
+
+```{r question-2}
+# Your code here
+```
+
+## Question 3
+
+Several demographic variables are inconsistently coded.
+
+### Tasks
+
+1. Recode `sex` so that values become only `"Male"` and `"Female"`.
+2. Collapse `"Declined"` in `race` into `"Unknown"`.
+3. Replace missing race values with `"Unknown"`.
+4. Create an age group variable with:
+   - 18–39
+   - 40–59
+   - 60+
+
+```{r question-3}
+# Your code here
+```
+
+# Part 3: Clean implausible clinical values
+
+## Question 4
+
+Some values reflect likely documentation or extraction errors. Replace implausible values with `NA` using the following clinically reasonable cutoffs:
+
+- `age`: valid if 18–100
+- `systolic_bp`: valid if 70–250
+- `diastolic_bp`: valid if 30–150
+- `height_cm`: valid if 120–230
+- `weight_kg`: valid if 30–300
+- `a1c`: valid if 3–20
+- `creatinine`: valid if 0.2–15
+- `portal_message_count`: valid if 0–50
+
+```{r question-4}
+# Your code here
+```
+
+# Part 4: Create derived variables
+
+## Question 5
+
+Create variables that could be used in quality improvement, clinical operations, or population health analyses.
+
+### Tasks
+
+1. Create body mass index (`bmi`).
+2. Create an obesity variable using BMI >= 30.
+3. Recode `smoker` into:
+   - `"Current/Former"`
+   - `"Never"`
+   - `"Unknown"`
+4. Recode `no_show` into a binary variable (`1 = yes`, `0 = no`).
+5. Create a binary variable for diabetes based on `diagnosis`.
+6. Create a binary variable for hypertension based on `diagnosis`.
+
+```{r question-5}
+# Your code here
+```
+
+# Part 5: Descriptive summaries
+
+## Question 6
+
+Create a descriptive summary of the cleaned cohort.
+
+### Tasks
+
+1. Produce summary statistics for:
+   - age
+   - sex
+   - race
+   - bmi
+   - a1c
+   - systolic_bp
+   - smoker category
+2. Stratify the summary by diabetes status.
+3. Add p-values comparing groups.
+
+```{r question-6}
+# Your code here
+```
+
+## Question 7
+
+Create a compact operational summary table using `gt`.
+
+### Tasks
+
+Create a table showing, by smoking category:
+
+1. number of patients
+2. mean age
+3. mean BMI
+4. mean systolic blood pressure
+5. no-show rate
+6. mean portal message count
+
+Then format the output as a polished `gt` table with:
+- a title
+- rounded numeric columns
+- percent formatting for no-show rate
+
+```{r question-7}
+# Your code here
+```
+
+# Part 6: Visualization
+
+## Question 8
+
+Create plots that would be useful in a clinical informatics presentation.
+
+### Tasks
+
+1. Histogram of age
+2. Boxplot of A1c by diabetes status
+3. Scatterplot of BMI vs systolic blood pressure
+4. Bar plot of no-show rate by smoking category
+
+Add figure titles and informative axis labels.
+
+```{r question-8}
+# Your code here
+```
+
+# Part 7: Basic analysis
+
+## Question 9
+
+A clinic director wants to know whether diabetes is associated with worse glycemic control and whether smoking status or portal engagement might be associated with missed visits.
+
+### Tasks
+
+1. Compare A1c between patients with and without diabetes.
+2. Fit a logistic regression model with `no_show_binary` as the outcome and the following predictors:
+   - age
+   - sex
+   - diabetes
+   - smoker category
+   - portal message count
+3. Report odds ratios with confidence intervals.
+
+```{r question-9}
+# Your code here
+```
+
+## Question 10
+
+Present the logistic regression model in a reader-friendly format using `gtsummary`.
+
+### Tasks
+
+1. Convert the logistic regression model into a formatted regression table.
+2. Exponentiate coefficients so the table reports odds ratios.
+3. Add confidence intervals and p-values.
+4. Bold statistically significant p-values if desired.
+
+```{r question-10}
+# Your code here
+```
+
+# Part 8: Interpretation
+
+## Question 11
+
+Write a brief interpretation in 4–6 sentences that addresses the following:
+
+1. What aspects of the dataset required cleaning before analysis?
+2. What patterns stood out in the plots?
+3. What factors appeared associated with missed visits?
+4. What are key limitations of EHR-derived clinical data?
+
+```{r question-11, echo=FALSE}
+# Write your response below this line in the knitted document if desired.
+```
+
