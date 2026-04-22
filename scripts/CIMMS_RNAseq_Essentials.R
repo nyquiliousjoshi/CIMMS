@@ -44,6 +44,9 @@ library(gt)
 library(DT) #creates interactive datatables
 library(hrbrthemes)
 library(plotly)
+library(tidyverse)
+library(gplots) #the heatmap2 function in this package is a primary tool for making heatmaps
+library(d3heatmap) #for making interactive heatmaps using D3
 
 # IF NOT DOWNLOADING ASK GPT!
 
@@ -86,6 +89,8 @@ ggplot(log2.cpm.df.melt, aes(x=variable, y=value, fill=variable)) +
   coord_flip() +
   theme_ipsum_rc() 
 
+
+
 table(rowSums(myDGEList$counts==0)==9)
 cpm <- cpm(myDGEList)
 keepers <- rowSums(cpm>1)>=3 #user defined
@@ -105,6 +110,17 @@ ggplot(log2.cpm.filtered.norm.df.melt, aes(x=variable, y=value, fill=variable)) 
        caption=paste0("produced on ", Sys.time())) +
   coord_flip() +
   theme_ipsum_rc() 
+
+
+
+pca.res <- prcomp(t(log2.cpm.filtered.norm), scale.=F, retx=T)
+pc.var<-pca.res$sdev^2
+pc.per<-round(pc.var/sum(pc.var)*100, 1)
+
+pca.res.df <- as_tibble(pca.res$x)
+ggplot(pca.res.df, aes(x=PC1, y=PC2, color=groups1)) +
+  geom_point(size=5) +
+  theme(legend.position="right")
 
 design <- model.matrix(~0 + groups1)
 colnames(design) <- levels(groups1)
@@ -135,7 +151,37 @@ diffGenes <- v.DEGList.filtered.norm$E[results[,1] !=0 | results[,2] !=0,]
 diffGenes.df <- as_tibble(diffGenes, rownames = "geneSymbol")
 datatable(diffGenes.df, 
           extensions = c('KeyTable', "FixedHeader"), 
-          caption = 'Table 1: DEGs for infected (wt Crypto) vs control',
+          caption = 'Table 1: DEGs for infected vs control',
           options = list(keys = TRUE, searchHighlight = TRUE, pageLength = 10, lengthMenu = c("10", "25", "50", "100"))) %>%
   formatRound(columns=c(1:10), digits=2)
+
+mydata.df <- as_tibble(log2.cpm.filtered.norm, rownames = "geneSymbol")
+colnames(mydata.df) <- c("geneSymbol", sampleLabels)
+write_tsv(mydata.df, "normData.txt")
+#user defined
+mydata.df <- mutate(mydata.df,
+                    uninfected.AVG = (uninf_rep1 + uninf_rep2 + uninf_rep1)/3, 
+                    crypto.wt.AVG = (crypto.wt_rep1 + crypto.wt_rep2 + crypto.wt_rep3)/3,
+                    crypto.mut.AVG = (crypto.mut_rep1 + crypto.mut_rep2 + crypto.mut_rep3)/3,
+                    #now make columns comparing each of the averages above that you're interested in
+                    LogFC.crypto.wt_vs_uninfected = (crypto.wt.AVG - uninfected.AVG),
+                    LogFC.crypto.mut_vs_uninfected = (crypto.mut.AVG - uninfected.AVG)) %>%
+  mutate_if(is.numeric, round, 2)
+
+datatable(mydata.df, 
+          extensions = c('KeyTable', "FixedHeader"), 
+          options = list(keys = TRUE, searchHighlight = TRUE, pageLength = 10, lengthMenu = c("10", "25", "50", "100"))) %>%
+  formatRound(columns=c(1:6), digits=2)
+myheatcolors2 <- colorRampPalette(colors=c("yellow","white","blue"))(100)
+clustRows <- hclust(as.dist(1-cor(t(diffGenes), method="pearson")), method="complete") #cluster rows by pearson correlation
+clustColumns <- hclust(as.dist(1-cor(diffGenes, method="spearman")), method="complete")
+module.assign <- cutree(clustRows, k=2)
+module.color <- rainbow(length(unique(module.assign)), start=0.1, end=0.9) 
+module.color <- module.color[as.vector(module.assign)] 
+d3heatmap(diffGenes,
+          colors = myheatcolors2,
+          Rowv=as.dendrogram(clustRows),
+          row_side_colors = module.color,
+          scale='row')
+
 
